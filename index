@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+        }
+        #left-pane, #right-pane {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #left-pane {
+            border-right: 1px solid #ccc;
+        }
+        #task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .task-item button {
+            margin-left: 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div id="left-pane">
+        <h2>Tasks</h2>
+        <ul id="task-list"></ul>
+    </div>
+    <div id="right-pane">
+        <h2>Add Task</h2>
+        <form id="task-form">
+            <input type="text" id="task-input" placeholder="Enter task" required>
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskForm = document.getElementById('task-form');
+            const taskInput = document.getElementById('task-input');
+            const taskList = document.getElementById('task-list');
+
+            taskForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const taskText = taskInput.value.trim();
+                if (taskText !== "") {
+                    addTask(taskText);
+                    taskInput.value = "";
+                }
+            });
+
+            function addTask(taskText) {
+                const listItem = document.createElement('li');
+                listItem.classList.add('task-item');
+                
+                const taskSpan = document.createElement('span');
+                taskSpan.textContent = taskText;
+                
+                const completeButton = document.createElement('button');
+                completeButton.textContent = 'Complete';
+                completeButton.addEventListener('click', () => {
+                    taskSpan.classList.toggle('completed');
+                });
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', () => {
+                    taskList.removeChild(listItem);
+                });
+
+                listItem.appendChild(taskSpan);
+                listItem.appendChild(completeButton);
+                listItem.appendChild(deleteButton);
+                taskList.appendChild(listItem);
+            }
+        });
+    </script>
+</body>
+</html>
